@@ -36,26 +36,57 @@ npm run android
 
 This builds the app, copies it into the Android project and opens Android Studio. Press the green **▶ Run** button.
 
+## Features
+
+- **Home dashboard**: needs-attention list, Pantry / Fridge / Freezer cards, "Expiring soon" carousel, category overview
+- **7 categories**: Food, Medicine, Documents (Iqama, passport, licence), Vehicle (insurance, Istimara, Fahas), Warranties, Subscriptions, Other
+- **Add / edit items**: category, name suggestions, icon, storage location, quantity and unit, expiry date with quick buttons, Hijri date preview, reminder choices, notes
+- **Item details**: days left, Gregorian and Hijri dates, quantity stepper, and actions: *Used it*, *Threw it away*, *Renewed* (pick a new date), *Cancelled*, with undo
+- **Expiring tab**: filters (this week, expired, 30 days, all, done), category filter and search, grouped by time
+- **Reminders**: on-device notifications 30 / 14 / 7 / 3 / 2 / 1 / 0 days before, at the hour you choose; tapping one opens the item
+- **Data stays on the phone** (Capacitor Preferences). Use *Settings → Demo items* to try it out
+
 ## Project structure
 
 ```
 src/app/
-  tabs/        Bottom tab bar (Expiring · Add item · Settings)
-  home/        "Expiring soon" list
-  add-item/    Add an item with its expiry date
-  settings/    Reminder settings
-src/theme/     App colors
-capacitor.config.ts   App id and name for Android/iOS
+  models/        Item and Settings types
+  data/          Categories, locations, reminder options
+  services/      item.store.ts (data + saving), reminder.service.ts (notifications)
+  utils/         Date helpers (days left, labels, Hijri)
+  components/    Item tile, item row, category card, "Add new item" button
+  tabs/          Floating tab bar
+  home/          Dashboard
+  categories/    All categories
+  category/      One category (with Pantry/Fridge/Freezer for food)
+  expiring/      Filtered list of everything
+  item-detail/   Item page with actions
+  item-form/     Add / edit form
+  settings/      Reminder time, notifications, demo data
+src/theme/       Colors and fonts
 ```
+
+## Android notification permissions
+
+After `npx cap add android`, open `android/app/src/main/AndroidManifest.xml` and add these lines
+inside `<manifest>` (above `<application>`) so reminders fire on time:
+
+```xml
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+```
+
+Notifications only work in the Android/iOS app. In the browser everything else works.
 
 ## Roadmap
 
 - [x] App shell with tabs
-- [ ] Add item form (name, category, expiry date)
-- [ ] Save items on the device
-- [ ] Local notifications 30, 7 and 1 day before expiry
-- [ ] Renew / consume / cancel actions
-- [ ] Hijri date support
+- [x] Add / edit / delete items
+- [x] Save items on the device
+- [x] Local notifications before expiry
+- [x] Used / renewed / cancelled actions with undo
+- [x] Hijri date display
 - [ ] Barcode scanning for groceries
 - [ ] OCR for document expiry dates
+- [ ] Arabic language and RTL layout
 - [ ] NestJS backend sync, email and WhatsApp reminders

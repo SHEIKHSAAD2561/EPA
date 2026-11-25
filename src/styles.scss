@@ -1,18 +1,273 @@
+/* Poppins, bundled so it works offline on the phone */
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+
 /* Core CSS required for Ionic components to work properly */
 @import '@ionic/angular/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
 @import '@ionic/angular/css/normalize.css';
 @import '@ionic/angular/css/structure.css';
 @import '@ionic/angular/css/typography.css';
-
-/* Optional CSS utils */
 @import '@ionic/angular/css/padding.css';
-@import '@ionic/angular/css/float-elements.css';
-@import '@ionic/angular/css/text-alignment.css';
-@import '@ionic/angular/css/text-transformation.css';
 @import '@ionic/angular/css/flex-utils.css';
 @import '@ionic/angular/css/display.css';
 
-/* Follow the phone's dark mode setting */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/* ---------- Page layout ---------- */
+
+ion-toolbar {
+  --border-width: 0 !important;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+ion-header {
+  box-shadow: none !important;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 20px 140px;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0 8px;
+
+  h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  p {
+    margin: 4px 0 0;
+    color: var(--epa-muted);
+    font-size: 15px;
+  }
+}
+
+.round-btn {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: var(--epa-mint);
+  color: #1f4d3a;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 26px 0 14px;
+
+  h2 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 600;
+  }
+  a,
+  button {
+    background: none;
+    border: 0;
+    color: var(--epa-mint-strong);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+/* ---------- Horizontal scroller ---------- */
+
+.h-scroll {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: 0 -20px;
+  padding: 0 20px 6px;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+/* ---------- Chips ---------- */
+
+.chip-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.chip-row.scroll {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.chip {
+  flex-shrink: 0;
+  border: 1.5px solid transparent;
+  background: var(--epa-card);
+  color: var(--ion-text-color);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s, border-color 0.15s;
+
+  &.selected {
+    background: var(--epa-mint);
+    border-color: var(--epa-mint-strong);
+    color: #1f4d3a;
+    font-weight: 500;
+  }
+}
+
+/* ---------- Status colors ---------- */
+
+.u-expired,
+.u-today {
+  --u: #e0524a;
+  --u-bg: #fbe1df;
+}
+.u-urgent {
+  --u: #d9822b;
+  --u-bg: #fbe9d4;
+}
+.u-soon {
+  --u: #b48a12;
+  --u-bg: #f8efcb;
+}
+.u-ok {
+  --u: #3fa37a;
+  --u-bg: #dcf3e6;
+}
+
+/* ---------- Form ---------- */
+
+.form-card {
+  background: var(--epa-surface);
+  border-radius: var(--epa-radius);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--epa-muted);
+  margin: 0 0 10px;
+}
+.field {
+  --background: var(--epa-card);
+  --border-radius: 14px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --highlight-color-focused: var(--epa-mint-strong);
+  font-size: 16px;
+}
+
+/* ---------- Empty state ---------- */
+
+.empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--epa-muted);
+
+  .big {
+    font-size: 56px;
+    margin-bottom: 8px;
+  }
+  h3 {
+    color: var(--ion-text-color);
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+  p {
+    margin: 0 auto 18px;
+    max-width: 320px;
+  }
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 22px;
+  font: inherit;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--epa-card);
+  color: var(--ion-text-color);
+
+  &.primary {
+    background: var(--epa-mint-strong);
+    color: #fff;
+  }
+  &.mint {
+    background: var(--epa-mint);
+    color: #1f4d3a;
+  }
+  &.danger {
+    background: #fbe1df;
+    color: #c0392b;
+  }
+  &.block {
+    width: 100%;
+  }
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+ion-searchbar.epa {
+  --background: var(--epa-card);
+  --border-radius: 16px;
+  --box-shadow: none;
+  padding: 0;
+  margin: 8px 0 4px;
+}
+
+ion-segment.epa {
+  --background: var(--epa-card);
+  border-radius: 14px;
+  ion-segment-button {
+    --indicator-color: #fff;
+    --color-checked: var(--ion-text-color);
+    --border-radius: 11px;
+    text-transform: none;
+    font-weight: 500;
+    min-height: 40px;
+    letter-spacing: 0;
+  }
+}

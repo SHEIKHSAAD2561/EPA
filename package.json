@@ -1,6 +1,6 @@
 {
   "name": "epa-expiry-reminder",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -23,7 +23,10 @@
     "@capacitor/core": "^8.6.2",
     "@capacitor/haptics": "^8.0.2",
     "@capacitor/keyboard": "^8.0.6",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/preferences": "^8.0.1",
     "@capacitor/status-bar": "^8.0.4",
+    "@fontsource/poppins": "^5.3.0",
     "@ionic/angular": "^9.0.13",
     "ionicons": "^8.1.1",
     "rxjs": "~7.8.0",

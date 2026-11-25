@@ -11,8 +11,12 @@ export const routes: Routes = [
         loadComponent: () => import('../home/home.page').then((m) => m.HomePage),
       },
       {
-        path: 'add',
-        loadComponent: () => import('../add-item/add-item.page').then((m) => m.AddItemPage),
+        path: 'categories',
+        loadComponent: () => import('../categories/categories.page').then((m) => m.CategoriesPage),
+      },
+      {
+        path: 'expiring',
+        loadComponent: () => import('../expiring/expiring.page').then((m) => m.ExpiringPage),
       },
       {
         path: 'settings',

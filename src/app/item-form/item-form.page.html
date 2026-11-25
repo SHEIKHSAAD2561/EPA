@@ -1,0 +1,142 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ editId ? 'Edit item' : 'Add new item' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="page narrow">
+    <!-- Live preview -->
+    <div class="preview" [style.background]="category().tint">
+      <span class="emoji">{{ emoji() || category().emoji }}</span>
+      <div>
+        <div class="p-name">{{ name() || 'Item name' }}</div>
+        <div class="p-sub">{{ preview() }}</div>
+      </div>
+    </div>
+
+    <!-- Category -->
+    <div class="form-card">
+      <span class="form-label">Category</span>
+      <div class="cat-grid">
+        @for (c of categories; track c.id) {
+          <button class="cat" [class.selected]="categoryId() === c.id" [style.--tint]="c.tint" (click)="selectCategory(c.id)">
+            <span class="ce">{{ c.emoji }}</span>
+            <span>{{ c.name }}</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Name + emoji -->
+    <div class="form-card">
+      <span class="form-label">Name</span>
+      <ion-input class="field" fill="solid" placeholder="e.g. {{ category().nameSuggestions[0] }}" [ngModel]="name()" (ngModelChange)="name.set($event ?? '')" [clearInput]="true" autocapitalize="words"></ion-input>
+      <div class="chip-row scroll mt">
+        @for (n of category().nameSuggestions; track n) {
+          <button class="chip" [class.selected]="name() === n" (click)="pickName(n)">{{ n }}</button>
+        }
+      </div>
+
+      <span class="form-label mt2">Icon</span>
+      <div class="emoji-grid">
+        @for (e of category().emojiSuggestions; track e) {
+          <button class="em" [class.selected]="emoji() === e" (click)="pickEmoji(e)">{{ e }}</button>
+        }
+      </div>
+    </div>
+
+    <!-- Where (food) -->
+    @if (isFood()) {
+      <div class="form-card">
+        <span class="form-label">Stored in</span>
+        <div class="loc-row">
+          @for (l of locations; track l.id) {
+            <button class="loc" [class.selected]="location() === l.id" (click)="location.set(l.id)">
+              <span class="le">{{ l.emoji }}</span>{{ l.name }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Quantity -->
+    @if (category().hasQuantity) {
+      <div class="form-card">
+        <span class="form-label">Quantity</span>
+        <div class="qty-row">
+          <div class="stepper">
+            <button (click)="step(-1)" aria-label="Less">−</button>
+            <input type="number" min="1" [ngModel]="quantity()" (ngModelChange)="quantity.set(+$event || 1)" />
+            <button (click)="step(1)" aria-label="More">+</button>
+          </div>
+        </div>
+        <div class="chip-row scroll mt">
+          @for (u of units; track u) {
+            <button class="chip" [class.selected]="unit() === u" (click)="unit.set(u)">{{ u }}</button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Expiry date -->
+    <div class="form-card">
+      <span class="form-label">Expiry date</span>
+      <div class="date-row">
+        <ion-datetime-button datetime="expiry"></ion-datetime-button>
+        <span class="date-hint">{{ preview() }}</span>
+      </div>
+      @if (hijri()) {
+        <div class="hijri">Hijri: {{ hijri() }}</div>
+      }
+      <div class="chip-row scroll mt">
+        @for (q of category().quickDates; track q.days) {
+          <button class="chip" (click)="quickDate(q.days)">+{{ q.label }}</button>
+        }
+      </div>
+
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime
+            id="expiry"
+            presentation="date"
+            [value]="expiryDate()"
+            [min]="'2000-01-01'"
+            [max]="maxDate"
+            [showDefaultButtons]="true"
+            (ionChange)="onDate($any($event).detail.value)"
+          ></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </div>
+
+    <!-- Reminders -->
+    <div class="form-card">
+      <span class="form-label">Remind me before</span>
+      <div class="chip-row">
+        @for (r of reminderOptions; track r.days) {
+          <button class="chip" [class.selected]="reminderDays().includes(r.days)" (click)="toggleReminder(r.days)">
+            {{ reminderDays().includes(r.days) ? '🔔' : '🔕' }} {{ r.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="form-card">
+      <span class="form-label">Notes (optional)</span>
+      <ion-textarea class="field" fill="solid" [autoGrow]="true" rows="2" placeholder="Policy number, where it's kept, how to renew…" [ngModel]="notes()" (ngModelChange)="notes.set($event ?? '')"></ion-textarea>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <div class="footer">
+    <button class="btn primary block" [disabled]="!valid() || saving()" (click)="save()">
+      {{ editId ? 'Save changes' : 'Add item' }}
+    </button>
+  </div>
+</ion-footer>

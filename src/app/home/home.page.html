@@ -1,0 +1,112 @@
+<ion-content>
+  <div class="page">
+    <header class="page-head">
+      <div>
+        <p class="hello">{{ greeting() }} 👋</p>
+        <h1>My Items</h1>
+        <p>{{ subtitle() }}</p>
+      </div>
+      <button class="round-btn" (click)="search()" aria-label="Search">
+        <ion-icon name="search-outline"></ion-icon>
+      </button>
+    </header>
+
+    @if (store.loaded() && store.active().length === 0) {
+      <div class="empty">
+        <div class="big">🧺</div>
+        <h3>Nothing tracked yet</h3>
+        <p>Add groceries, medicine, your Iqama or car insurance, and we'll remind you before they expire.</p>
+        <div class="chip-row" style="justify-content:center">
+          <a class="btn primary" routerLink="/item/new">Add first item</a>
+          <button class="btn mint" (click)="demo()">Load demo items</button>
+        </div>
+      </div>
+    } @else {
+      <div class="top-grid">
+        <!-- Needs attention -->
+        <section class="attention">
+          <div class="section-head">
+            <h2>Needs attention</h2>
+            <a routerLink="/tabs/expiring">See all <ion-icon name="arrow-forward"></ion-icon></a>
+          </div>
+          @if (attention().length) {
+            <div class="stack">
+              @for (item of attention(); track item.id) {
+                <app-item-row [item]="item" />
+              }
+            </div>
+          } @else {
+            <div class="all-good">
+              <span>✅</span>
+              <div>
+                <strong>All good</strong>
+                <p>Nothing expires in the next 3 days.</p>
+              </div>
+            </div>
+          }
+        </section>
+
+        <!-- Kitchen locations -->
+        <section class="locations">
+          <div class="section-head">
+            <h2>Kitchen</h2>
+            <a routerLink="/category/food">Food <ion-icon name="arrow-forward"></ion-icon></a>
+          </div>
+          <div class="loc-grid">
+            @for (loc of locations; track loc.id) {
+              <app-category-card
+                [title]="loc.name"
+                [emoji]="loc.emoji"
+                [count]="locationCounts()[loc.id]"
+                [background]="loc.gradient"
+                [link]="['/category', 'food']"
+                [query]="{ location: loc.id }"
+              />
+            }
+          </div>
+        </section>
+      </div>
+
+      <!-- Expiring soon carousel -->
+      <section>
+        <div class="section-head">
+          <h2>Expiring Soon</h2>
+          <a routerLink="/tabs/expiring">See all <ion-icon name="arrow-forward"></ion-icon></a>
+        </div>
+        @if (upcoming().length) {
+          <div class="h-scroll">
+            @for (item of upcoming(); track item.id) {
+              <app-item-tile [item]="item" />
+            }
+          </div>
+        } @else {
+          <p class="muted">Nothing expires in the next 30 days. 🎉</p>
+        }
+      </section>
+
+      <!-- Categories -->
+      <section>
+        <div class="section-head">
+          <h2>Categories</h2>
+          <a routerLink="/tabs/categories">See all <ion-icon name="arrow-forward"></ion-icon></a>
+        </div>
+        <div class="cat-grid">
+          @for (cat of categories; track cat.id) {
+            <a class="cat" [routerLink]="['/category', cat.id]" [style.background]="cat.tint">
+              <span class="cat-emoji">{{ cat.emoji }}</span>
+              <span class="cat-name">{{ cat.name }}</span>
+              <span class="cat-count">
+                {{ categoryStats()[cat.id].total }} items
+                @if (categoryStats()[cat.id].soon) {
+                  · <b [style.color]="cat.accent">{{ categoryStats()[cat.id].soon }} soon</b>
+                }
+              </span>
+            </a>
+          }
+        </div>
+      </section>
+    }
+  </div>
+
+  <app-add-pill />
+</ion-content>

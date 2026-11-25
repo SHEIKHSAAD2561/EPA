@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home" text=""></ion-back-button>
+    </ion-buttons>
+    @if (item()) {
+      <ion-buttons slot="end">
+        <ion-button [routerLink]="['/item', item()!.id, 'edit']" aria-label="Edit">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="remove()" aria-label="Delete">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (item(); as item) {
+    <div class="page narrow">
+      <div class="hero" [style.background]="tint()">
+        <span class="emoji">{{ item.emoji }}</span>
+      </div>
+
+      <h1 class="title">{{ item.name }}</h1>
+      <p class="meta">
+        {{ category()!.emoji }} {{ category()!.name }}
+        @if (location()) {
+          · {{ location()!.emoji }} {{ location()!.name }}
+        }
+      </p>
+
+      @if (isActive()) {
+        <div class="status" [class]="'status u-' + level()">{{ label() }}</div>
+      } @else {
+        <div class="status done">{{ statusText() }}</div>
+      }
+
+      <!-- Quantity stepper (food, medicine) -->
+      @if (category()!.hasQuantity && isActive()) {
+        <div class="qty-card">
+          <div>
+            <div class="k">Quantity</div>
+            <div class="v">{{ item.quantity }} {{ item.unit }}</div>
+          </div>
+          <div class="stepper">
+            <button (click)="changeQuantity(-1)" aria-label="Use one">−</button>
+            <button (click)="changeQuantity(1)" aria-label="Add one">+</button>
+          </div>
+        </div>
+      }
+
+      <div class="info">
+        <div class="row">
+          <span class="k">Expiry date</span>
+          <span class="v">{{ date() }}</span>
+        </div>
+        @if (hijri()) {
+          <div class="row">
+            <span class="k">Hijri</span>
+            <span class="v">{{ hijri() }}</span>
+          </div>
+        }
+        <div class="row">
+          <span class="k">Reminders</span>
+          <span class="v">{{ reminderText() }}</span>
+        </div>
+        @if (item.notes) {
+          <div class="row">
+            <span class="k">Notes</span>
+            <span class="v">{{ item.notes }}</span>
+          </div>
+        }
+        <div class="row">
+          <span class="k">Added</span>
+          <span class="v">{{ addedOn() }}</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        @if (!isActive()) {
+          <button class="btn primary block" (click)="restore()">Put back on my list</button>
+        } @else if (category()!.lifecycle === 'consume') {
+          <button class="btn primary block" (click)="finish('used', 'Marked as used ✅')">✅ Used it</button>
+          <button class="btn block" (click)="finish('discarded', 'Thrown away 🗑️')">🗑️ Threw it away</button>
+          <button class="btn mint block" [routerLink]="['/item', item.id, 'edit']">📅 Change expiry date</button>
+        } @else {
+          <button class="btn primary block" (click)="renew()">🔄 Renewed</button>
+          <button class="btn block" (click)="finish('cancelled', 'Cancelled')">✖️ Cancelled / no longer need it</button>
+        }
+      </div>
+    </div>
+  } @else if (store.loaded()) {
+    <div class="empty">
+      <div class="big">🤷</div>
+      <h3>Item not found</h3>
+      <p>It may have been deleted.</p>
+    </div>
+  }
+</ion-content>
