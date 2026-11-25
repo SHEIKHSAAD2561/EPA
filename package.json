@@ -1,0 +1,42 @@
+{
+  "name": "epa-expiry-reminder",
+  "version": "0.1.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "android": "ng build && npx cap sync android && npx cap open android",
+    "sync": "ng build && npx cap sync"
+  },
+  "private": true,
+  "packageManager": "npm@10.9.9",
+  "dependencies": {
+    "@angular/common": "^22.3.0",
+    "@angular/compiler": "^22.3.0",
+    "@angular/core": "^22.3.0",
+    "@angular/forms": "^22.3.0",
+    "@angular/platform-browser": "^22.3.0",
+    "@angular/router": "^22.3.0",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.6.2",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/keyboard": "^8.0.6",
+    "@capacitor/status-bar": "^8.0.4",
+    "@ionic/angular": "^9.0.13",
+    "ionicons": "^8.1.1",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.16.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^22.3.0",
+    "@angular/cli": "^22.3.0",
+    "@angular/compiler-cli": "^22.3.0",
+    "@capacitor/cli": "^8.6.2",
+    "@ionic/angular-toolkit": "^13.0.0",
+    "prettier": "^3.8.1",
+    "typescript": "~6.0.2"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "epa-expiry-reminder",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
